@@ -58,18 +58,33 @@ namespace TGA.Controllers
             return Ok(list);
         }
 
-        [HttpGet("GetTimeSheetEntryByUserDateRange")]
-        public IActionResult GetTimeSheetEntryByUserDateRange(int UserId,DateTime date)
+        [HttpGet("GetTimeSheetEntryByUserDate")]
+        public IActionResult GetTimeSheetEntryByUserDate(int UserId,DateTime date)
         {           
             var list = _context.Users.Where(x=>x.Id==UserId)
                .Include(ts => ts.Timesheets.Where(y => y.WorkingDate.Date >= date.Date && y.WorkingDate.Date <= date.Date)).ToList();            
             return Ok(list);
         }
 
-        [HttpGet("GetTimeSheetEntryByDateRange")]
-        public IActionResult GetTimeSheetEntryByDateRange(DateTime date)
+        [HttpGet("GetTimeSheetEntryByDate")]
+        public IActionResult GetTimeSheetEntryByDate(DateTime date)
         {           
             var list = _context.Timesheets.Where(y => y.WorkingDate.Date >= date.Date && y.WorkingDate.Date <= date.Date).ToList();               
+            return Ok(list);
+        }
+
+        [HttpGet("GetTimeSheetEntryByUserDateRange")]
+        public IActionResult GetTimeSheetEntryByUserDateRange(int UserId, DateTime startDate,DateTime endDate)
+        {
+            var list = _context.Users.Where(x => x.Id == UserId)
+               .Include(ts => ts.Timesheets.Where(y => y.WorkingDate.Date >= startDate.Date && y.WorkingDate.Date <= endDate.Date)).ToList();
+            return Ok(list);
+        }
+
+        [HttpGet("GetTimeSheetEntryByDateRange")]
+        public IActionResult GetTimeSheetEntryByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var list = _context.Timesheets.Where(y => y.WorkingDate.Date >= startDate.Date && y.WorkingDate.Date <= endDate.Date).ToList();
             return Ok(list);
         }
     }
